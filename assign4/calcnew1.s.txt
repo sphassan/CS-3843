@@ -1,0 +1,25 @@
+	.file	"calc.c"
+	.text
+.globl calc
+	.type	calc, @function
+calc:
+	pushl	%ebp			.push parameters onto the stack
+	movl	%esp, %ebp		.move stack pointer to base pointer
+	movl	8(%ebp), %edx		.move x into %edx
+	movl	16(%ebp), %ecx		.move z into %ecx
+	sall	$2, %edx		.multiply %edx by 4, %edx is 4x
+	subl	8(%ebp), %edx		.subtract %edx by x, %edx is 3x
+	movl	12(%ebp), %eax		.move y into %eax
+	sall	$3, %eax		.multiply %eax by 8, %eax is 8y
+	subl	12(%ebp), %eax		.subtract %eax by y, %eax is 7y
+	addl	%edx, %eax		.add %edx to %eax, %eax is 3x + 7y
+	movl	%ecx, %edx		.move %ecx into %edx, %edx = z
+	sall	$4, %edx		.multiply %edx by 16, %edx = 16z
+	sall	$1, %ecx		.multiply %ecx by 2, %ecx = 2z
+	subl	%ecx, %edx		.subtract %ecx from %edx, %edx = 14z
+	addl	%edx, %eax		.add %edx to %eax, %eax is 3x + 2y + 15z 
+	popl	%ebp			.pop the base pointer off of the stack
+	ret				.return %eax
+	.size	calc, .-calc
+	.ident	"GCC: (Ubuntu 4.3.3-5ubuntu4) 4.3.3"
+	.section	.note.GNU-stack,"",@progbits
